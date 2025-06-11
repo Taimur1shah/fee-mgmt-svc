@@ -1,0 +1,186 @@
+openapi: 3.0.3
+info:
+  title: Fee Service API
+  version: 1.0.0
+  description: API for defining new fee structure and retrieval
+
+paths:
+  /api/fees:
+    post:
+      tags:
+        - Fee
+      operationId: add new Fee
+      summary: Define new Fee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeeRequest'
+      responses:
+        '201':
+          description: Fee defined Sucessfully
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+        default:
+          $ref: '#/components/responses/GenericDefaultResponse'
+
+  /api/fees/{id}:
+    get:
+      tags:
+        - Fee
+      operationId: getFeeById
+      summary: Retrieve fee by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Fee found
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+        '404':
+          $ref: '#/components/responses/Generic404Response'
+        default:
+          $ref: '#/components/responses/GenericDefaultResponse'
+
+    put:
+      tags:
+        - Fee
+      operationId: updateFeeById
+      summary: Update an existing fee
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeeRequest'
+      responses:
+        '200':
+          description: Fee updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+        '404':
+          $ref: '#/components/responses/Generic404Response'
+        default:
+          $ref: '#/components/responses/GenericDefaultResponse'
+
+    delete:
+      tags:
+        - Fee
+      operationId: deleteFeeById
+      summary: Delete fee by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '204':
+          description: Fee deleted successfully
+        '404':
+          $ref: '#/components/responses/Generic404Response'
+        default:
+          $ref: '#/components/responses/GenericDefaultResponse'
+
+  /api/fees/grade/{grade}:
+    get:
+      tags:
+        - Fee
+      operationId: getFeeByGrade
+      summary: Retrieve fee by Grade
+      parameters:
+        - in: path
+          name: grade
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Fee found
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+        '404':
+          $ref: '#/components/responses/Generic404Response'
+        default:
+          $ref: '#/components/responses/GenericDefaultResponse'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        detail:
+          type: string
+        reason:
+          type: string
+      required:
+        - name
+        - code
+        - detail
+
+    FeeRequest:
+      type: object
+      properties:
+        feeName:
+          type: string
+        feeCharges:
+          type: number
+          format: double
+        grade:
+          type: string
+      required:
+        - feeName
+        - grade
+
+    FeeResponse:
+      allOf:
+        - $ref: '#/components/schemas/FeeRequest'
+        - type: object
+          properties:
+            feeId:
+              type: integer
+              format: int32
+              readOnly: true
+
+  responses:
+    Generic404Response:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    GenericDefaultResponse:
+      description: This is the default internal server error. System was not able to process this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
