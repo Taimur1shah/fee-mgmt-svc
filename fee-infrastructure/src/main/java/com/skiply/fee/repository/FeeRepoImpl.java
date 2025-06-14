@@ -14,8 +14,8 @@ public class FeeRepoImpl implements FeeRepository {
   }
 
   @Override
-  public void save(Fee student) {
-    jpaRepository.save(student);
+  public Fee save(Fee fee) {
+    return jpaRepository.save(fee);
   }
 
   @Override
@@ -24,8 +24,8 @@ public class FeeRepoImpl implements FeeRepository {
   }
 
   @Override
-  public Fee findByGrade(String grade) {
-    return jpaRepository.findByGrade(grade);
+  public Fee findByGradeAndFeeName(String grade, String feeName) {
+     return jpaRepository.findByGradeAndFeeName(grade,feeName);
   }
 
   @Override

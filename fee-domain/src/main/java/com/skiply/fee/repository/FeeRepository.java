@@ -4,8 +4,8 @@ import com.skiply.fee.domain.Fee;
 import java.util.Optional;
 
 public interface FeeRepository {
-  void save(Fee fee);
+  Fee save(Fee fee);
   Optional<Fee> findById(Integer id);
-  Fee findByGrade(String grade);
+  Fee findByGradeAndFeeName(String grade,String feeName);
   void deleteById(Integer id);
 }

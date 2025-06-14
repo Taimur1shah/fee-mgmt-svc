@@ -5,7 +5,7 @@ info:
   description: API for defining new fee structure and retrieval
 
 paths:
-  /api/fees:
+  /fee-service/api/fees:
     post:
       tags:
         - Fee
@@ -24,11 +24,14 @@ paths:
             application/json:
               schema:
                 type: object
-                additionalProperties: false
+                properties:
+                  feeId:
+                    type: integer
+                    format: int32
         default:
           $ref: '#/components/responses/GenericDefaultResponse'
 
-  /api/fees/{id}:
+  /fee-service/api/fees/{id}:
     get:
       tags:
         - Fee
@@ -105,7 +108,7 @@ paths:
         default:
           $ref: '#/components/responses/GenericDefaultResponse'
 
-  /api/fees/grade/{grade}:
+  /fee-service/api/fees/grade/{grade}:
     get:
       tags:
         - Fee
@@ -125,6 +128,25 @@ paths:
               schema:
                 type: object
                 additionalProperties: false
+        '404':
+          $ref: '#/components/responses/Generic404Response'
+        default:
+          $ref: '#/components/responses/GenericDefaultResponse'
+  /fee-service/api/fees/pay:
+    post:
+      tags:
+        - Fee
+      operationId: payFee
+      summary: Pay Fee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayFeeRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/PaymentReceipt200Response'
         '404':
           $ref: '#/components/responses/Generic404Response'
         default:
@@ -160,7 +182,72 @@ components:
       required:
         - feeName
         - grade
-
+        - studentId
+    PayFeeRequest:
+      type: object
+      properties:
+        studentId:
+          type: integer
+          format: int32
+        quantity:
+          type: integer
+          format: int32
+        feeName:
+          type: string
+        grade:
+          type: string
+        cardType:
+          type: string
+        cardNumber:
+          type: string
+      required:
+        - cardType
+        - cardNumber
+    PaymentReceiptResponse:
+      type: object
+      properties:
+        studentId:
+          type: integer
+          format: int32
+        feeName:
+          type: string
+        grade:
+          type: string
+        receiptId:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        amount:
+          type: number
+          format: float
+        transaction:
+          $ref: '#/components/schemas/Transaction'
+      required:
+        - receiptId
+        - studentId
+        - feeName
+        - grade
+        - amount
+        - transaction
+    Transaction:
+      type: object
+      properties:
+        transactionId:
+          type: string
+        referenceNumber:
+          type: string
+        cardType:
+          type: string
+          example: master card
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - transactionId
+        - referenceNumber
+        - cardType
+        - timestamp
     FeeResponse:
       allOf:
         - $ref: '#/components/schemas/FeeRequest'
@@ -172,6 +259,12 @@ components:
               readOnly: true
 
   responses:
+    PaymentReceipt200Response:
+      description: Payment paid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentReceiptResponse'
     Generic404Response:
       description: The requested resource was not found.
       content:
