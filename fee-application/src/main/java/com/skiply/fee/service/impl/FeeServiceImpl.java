@@ -14,6 +14,7 @@ import com.skiply.fee.service.FeeService;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,12 +34,14 @@ public class FeeServiceImpl implements FeeService {
      return repository.save(fee);
   }
 
+  @Cacheable("fees")
   @Override
   public Optional<Fee>  getFeeById(Integer feeId) {
     Optional<Fee> optionalFee = repository.findById(feeId);
     return optionalFee;
   }
 
+  @Cacheable("feegrade")
   @Override
   public Fee getFeeByGradeAndFeeName(String grade, String feeName) {
     return repository.findByGradeAndFeeName(grade,feeName);
