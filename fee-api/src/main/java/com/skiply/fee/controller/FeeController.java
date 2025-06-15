@@ -7,16 +7,13 @@ import com.skiply.fee.api.model.FeeResponse;
 import com.skiply.fee.api.model.PayFeeRequest;
 import com.skiply.fee.api.model.PaymentReceiptResponse;
 import com.skiply.fee.domain.Fee;
-import com.skiply.fee.dto.FeeDto;
 import com.skiply.fee.dto.PaymentDto;
 import com.skiply.fee.dto.PaymentResponseDto;
-import com.skiply.fee.dto.TransactionDTO;
 import com.skiply.fee.response.FeeResponseBuilder;
 import com.skiply.fee.service.FeeService;
 import com.skiply.fee.service.impl.FeeServiceImpl;
-import com.skiply.fee.util.FeeUtil;
+
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -24,7 +21,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @RestController

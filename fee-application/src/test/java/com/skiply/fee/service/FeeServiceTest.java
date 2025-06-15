@@ -36,12 +36,11 @@ class FeeServiceTest {
 
   @BeforeEach
   void setUp() {
-    testFee = Fee.builder()
-        .feeId(1)
-        .grade("10")
-        .feeName("Tuition")
-        .feeCharges(500.0)
-        .build();
+    testFee = new Fee();
+    testFee.setFeeId(1);
+    testFee.setGrade("10");
+    testFee.setFeeName("Tuition");
+    testFee.setFeeCharges(500.0);
 
     paymentDto = PaymentDto.builder()
         .studentId(123)
