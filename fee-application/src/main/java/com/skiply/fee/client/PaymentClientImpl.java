@@ -37,11 +37,15 @@ public class PaymentClientImpl implements PaymentClient {
     headers.setContentType(MediaType.APPLICATION_JSON);
 
     HttpEntity<PaymentDto> request = new HttpEntity<>(paymentDto, headers);
-    ResponseEntity<PaymentClientResponse> response = restTemplate.postForEntity(
-        paymentServiceUrl,             // URL to call
-        request,                    // request body (POST payload)
-        PaymentClientResponse.class    // response type
-    );
+    ResponseEntity<PaymentClientResponse> response = null;
+    try{
+      response = restTemplate.postForEntity(
+          paymentServiceUrl, request, PaymentClientResponse.class
+      );
+    }catch (Exception ex){
+      ex.printStackTrace();
+    }
+
 
     PaymentClientResponse paymentClientResponse = new PaymentClientResponse();
     BeanUtils.copyProperties(response.getBody(), paymentClientResponse);

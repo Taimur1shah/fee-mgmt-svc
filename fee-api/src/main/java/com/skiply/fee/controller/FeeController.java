@@ -56,6 +56,16 @@ public class FeeController implements FeeApi {
   }
 
   @Override
+  public ResponseEntity<Object> getFeeByGradeAndFeeName(String grade,String feeName) {
+    Fee fee = feeService.getFeeByGradeAndFeeName(grade,feeName);
+
+
+    FeeResponse feeResp = new FeeResponse();
+    BeanUtils.copyProperties(fee, feeResp);
+    return ResponseEntity.ok(feeResp);
+  }
+
+  @Override
   public ResponseEntity<Object> updateFeeById(Integer feeId, FeeRequest feeReq) {
     feeService.getFeeById(feeId)
         .orElseThrow(() -> new NoSuchElementException("Fee with ID " + feeId + " not found"));

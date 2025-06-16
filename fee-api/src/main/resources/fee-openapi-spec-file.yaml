@@ -108,6 +108,37 @@ paths:
         default:
           $ref: '#/components/responses/GenericDefaultResponse'
 
+  /fee-service/api/fees/grade/{grade}/name/{feeName}:
+    get:
+      tags:
+        - Fee
+      operationId: getFeeByGradeAndFeeName
+      summary: Retrieve fee by grade and name
+      parameters:
+        - in: path
+          name: grade
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: feeName
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Fee found
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+        '404':
+          $ref: '#/components/responses/Generic404Response'
+        default:
+          $ref: '#/components/responses/GenericDefaultResponse'
+
+
   /fee-service/api/fees/grade/{grade}:
     get:
       tags:
