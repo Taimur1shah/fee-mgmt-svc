@@ -21,7 +21,8 @@
    API first approach has been used, OpenAPI tool  will create the FeeApi controller interface stub
    fee-api --> build -->classes --> com.skiply.fee.api --> FeeApi
 4. Run the application , it will start on port 8081
-5. Import the Postman collection and execute the curl requests
+5. Import the Postman collection 'Fees.postman_collection.json' located in project root directory and execute the curl requests 
+   and execute the curl requests
 6. H2 db console can be connected in browser
    JDBC URL : jdbc:h2:mem:feedb
    userName : sa
